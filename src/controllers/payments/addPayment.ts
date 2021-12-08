@@ -21,7 +21,7 @@ const addPayment = async (req: Request, res: Response) => {
     const body: AddPayment = req.body;
     const now = new Date();
 
-    const reservation: ReservationInstance = await Reservation.findOne({
+    let reservation: ReservationInstance = await Reservation.findOne({
         where: {
             id: body.reservationId
         },
@@ -58,6 +58,8 @@ const addPayment = async (req: Request, res: Response) => {
                     id: body.reservationId
                 }
             });
+
+            reservation.status = "CONFIRMED";
     
             await Event.update({soldTickets: Sequelize.literal(`soldTickets + ${reservation.Seats.length}`)}, {
                 where: {

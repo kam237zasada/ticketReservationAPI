@@ -6,9 +6,23 @@ import db from "../../DBmodels/index";
 const Reservation = db.reservation;
 
 const getReservations = async (req: Request, res: Response) => {
+
+    if(req.query.limit && isNaN(+req.query.limit) || +req.query.limit <= 0) {
+        return res.status(StatusCodes.BAD_REQUEST).send({
+            message: "limit must be a number greater than 0"
+        })
+    }
+
+    if(req.query.offset && isNaN(+req.query.offset) || +req.query.offset <= 0) {
+        return res.status(StatusCodes.BAD_REQUEST).send({
+            message: "offset must be a number greater than 0"
+        })
+    }
     try {
         const reservations = await Reservation.findAll({
             where: getReservationsQueries(req),
+            limit: +req.query.limit || null,
+            offset: +req.query.offset || 0,
             include: [
                 {all: true}
             ]
