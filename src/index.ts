@@ -8,7 +8,7 @@ import reservations from "./routes/reservations";
 import payments from "./routes/payments";
 
 
-db.sequelize.sync();
+db.sequelize.sync({force: true});
 
 const app = express();
 
