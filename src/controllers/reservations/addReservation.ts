@@ -92,7 +92,7 @@ const addReservation = async (req: Request, res: Response): Promise<Response> =>
             const seatsLeft: number = event.hall.availablePlaces - reservedSeats.length - seatsToReservate.length;
 
 
-            if(seatsLeft < 2) {
+            if(seatsLeft === 1) {
                 return res.status(StatusCodes.BAD_REQUEST).send({
                     message: "You cannot reserve seats leaving only 1 place left"
                 })
